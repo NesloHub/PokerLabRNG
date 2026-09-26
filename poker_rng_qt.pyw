@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PokerLab RNG — High-Performance Compact GTO Decision Engine
-Built with PyQt6 for 144Hz/240Hz smooth window movement, fixed HUD size,
-cryptographic random number generation, and single-trigger Hover Mode.
+PokerLab RNG - a small random number generator (1-100) for GTO mixed frequencies.
+Built with PyQt6 for a smooth window that can be dragged between monitors,
+cryptographic random numbers, and single-trigger Hover Mode.
 """
 
 import sys

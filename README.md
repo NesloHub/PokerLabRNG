@@ -1,62 +1,112 @@
-# PokerLab RNG — High-Performance GTO Desktop HUD
+# PokerLab RNG
 
-An ultra-compact, high-performance desktop HUD engineered for poker players using mixed frequencies (GTO strategies), multi-tabling, and live games.
+A small Windows program that rolls a random number from **1 to 100**.
 
-Built with **PyQt6** for 144Hz/240Hz silky smooth window movement, fixed HUD dimensions, single-trigger **Hover Mode**, and cryptographically secure random number generation (CSPRNG).
+It is built for players who mix their frequencies (the GTO way of playing): you decide how often you
+want to bet or raise — say 50 % — and the program rolls the number for you. That way the decision is
+random and honest instead of "I think I feel like raising this time".
 
----
-
-## ⚡ Quick Start
-
-1. **Directly from your Desktop**:
-   - Double-click the **`PokerLab RNG.lnk`** shortcut on your Desktop!
-2. **Or from the directory**:
-   - Double-click [`PokerLabRNG.exe`](file:///C:/Users/Neslo/.gemini/antigravity-ide/scratch/poker-rng/PokerLabRNG.exe)
-   - Or run [`Start-PokerRNG.bat`](file:///C:/Users/Neslo/.gemini/antigravity-ide/scratch/poker-rng/Start-PokerRNG.bat)
+It is **not** a tracker, not a HUD and not a solver. It does not read your tables, does not count
+hands, stores no statistics and never goes online. It only rolls a number.
 
 ---
 
-## 🎯 Key Features & Details
+## Download and run
 
-- **Integrated Brand & Icon Inside the Program**:
-  - The header displays the custom glowing neon spade chip icon alongside the title **`POKERLAB RNG`**.
-- **Fixed HUD Footprint (240 × 420 px)**:
-  - Non-resizable, compact layout designed to sit cleanly beside or between your poker tables (PokerStars, GGPoker, PartyPoker, Unibet, WPT, etc.).
-- **144Hz / 240Hz Silky Smooth Performance**:
-  - Zero lag or stutter when moving the window across monitors or between active tables.
-  - Asynchronous audio playback prevents any GUI thread blocking.
-- **🔥 Single-Sweep Hover Mode**:
-  - Turn on **Hover**, and the RNG will roll automatically exactly ONCE each time the mouse cursor sweeps across the card. Zero clicks and zero keystrokes required!
-- **📌 Always on Top (Pin)**:
-  - Enabled by default, ensuring PokerLab RNG never hides behind active poker tables.
-- **Cryptographically Secure (CSPRNG)**:
-  - Mathematically unbiased, uniform random generation (1–100) powered by Python `secrets`.
-- **GTO Frequency Decision Evaluator**:
-  - Preset buttons for standard GTO frequencies (**25%**, **33%**, **50%**, **75%**) plus a precision slider.
-  - Automatically highlights **`BET / RAISE (≤ X%)`** in glowing green if roll is within threshold, or **`CHECK / FOLD (> X%)`** in muted slate if above.
-- **Auto-Roll or Manual**:
-  - Choose between *Manual*, *Hover*, *Auto 2s*, or *Auto 1s*.
-- **Roll History & Stats**:
-  - Displays the last 6 rolls with action color coding and running average.
+1. Open the [latest release](https://github.com/NesloHub/PokerLabRNG/releases/latest) and download
+   `PokerLab_RNG_v1.0.zip`.
+2. Unzip it anywhere (Desktop is fine).
+3. Double-click **`PokerLabRNG.exe`**.
+
+Nothing to install: no admin rights, no account, no internet connection. Windows 10 or 11, 64-bit.
+The window is a fixed 240 x 420 px and stays on top of your tables — drag it wherever it suits you.
 
 ---
 
-## ⌨️ Keyboard Shortcuts
+## Using it — three steps
+
+1. **Set your frequency.** Click **25 %**, **33 %**, **50 %** or **75 %**, or drag the slider to any
+   value between 1 and 100.
+2. **Roll.** Press the big **ROLL RNG** button, the **space bar**, or click the number card itself.
+3. **Read the answer.** The program compares the roll with your frequency:
+   - roll **inside** your frequency → **BET / RAISE (≤ 50 %)** shown in green
+   - roll **above** your frequency → **CHECK / FOLD (> 50 %)** shown in grey
+
+With a frequency of 50 %, a roll of **12** means BET / RAISE and a roll of **58** means CHECK / FOLD.
+
+---
+
+## What you see on screen
+
+| Part of the window | What it does |
+| :--- | :--- |
+| The big number | The latest roll, from 1 to 100. Click the card to roll again. |
+| Green or grey line under the number | The action that follows from the roll and your frequency. |
+| **ROLL RNG (Space)** | Rolls a new number. |
+| **Manual / Hover / Auto 2s / Auto 1s** | How rolls happen: only when you ask (Manual), once every time the mouse sweeps over the card (Hover), or on a timer. |
+| **Threshold** + slider | Your frequency in percent. |
+| **25 % / 33 % / 50 % / 75 %** | Quick buttons for the most common frequencies. |
+| The row of small boxes | Your last six rolls. |
+| **Rolls: n | Avg: x.x** | How many rolls this session and their average. |
+| Speaker button | Sound on or off. |
+| Pin button | Keep the window on top — on by default. |
+
+---
+
+## Keyboard shortcuts
 
 | Key | Action |
 | :--- | :--- |
-| **Spacebar** | Roll new number manually |
-| **H** | Toggle **Hover Mode** on/off |
-| **A** | Toggle Auto-Roll on/off |
-| **T** | Toggle "Always on Top" (Pin 📌) |
-| **M** | Toggle sound (Mute/Unmute) |
-| **Up / Down** | Adjust threshold (+/- 5%) |
+| **Space** | Roll a new number |
+| **H** | Turn Hover mode on or off |
+| **A** | Turn Auto-roll (2 s) on or off |
+| **T** | Turn "always on top" on or off |
+| **M** | Mute or unmute the sound |
+| **Up / Down** | Frequency +/- 5 % |
 
 ---
 
-## 📁 Project Files
+## Good to know
 
-- Executable: [`PokerLabRNG.exe`](file:///C:/Users/Neslo/.gemini/antigravity-ide/scratch/poker-rng/PokerLabRNG.exe)
-- Source code: [`poker_rng_qt.pyw`](file:///C:/Users/Neslo/.gemini/antigravity-ide/scratch/poker-rng/poker_rng_qt.pyw)
-- Release Zip: [`PokerLab_RNG_v1.0.zip`](file:///C:/Users/Neslo/.gemini/antigravity-ide/scratch/poker-rng/PokerLab_RNG_v1.0.zip)
-- Desktop Shortcut: `C:\Users\Neslo\Desktop\PokerLab RNG.lnk`
+- The rolls are cryptographically random (Python `secrets`), so every number from 1 to 100 is equally
+  likely. There is no pattern to exploit — a low roll does not make a high roll more likely.
+- Nothing is saved to disk. Close the program and the history is gone; the next start begins fresh.
+- The sound is a short beep. It plays on a background thread, so it never makes the window stutter.
+- The download is about 38 MB because the program ships with everything it needs (PyQt6) inside one
+  EXE — there is nothing else to install.
+
+---
+
+## Run or build it yourself
+
+Run from the source:
+
+```bat
+python -m pip install PyQt6
+python poker_rng_qt.pyw
+```
+
+Build the single-file EXE again:
+
+```bat
+python -m pip install pyinstaller
+pyinstaller PokerLabRNG.spec
+```
+
+The finished program is written to `dist\PokerLabRNG.exe`.
+
+---
+
+## Files in this repository
+
+| File | What it is |
+| :--- | :--- |
+| `poker_rng_qt.pyw` | The program — the PyQt6 version that is released. |
+| `PokerLabRNG.spec` | PyInstaller recipe used to build `PokerLabRNG.exe`. |
+| `icon.ico`, `icon.png` | The program icon. |
+| `release_files/` | `README.txt` and `Start.bat`, the two extra files that go into the release zip. |
+| `build_zip.py` | Builds the release zip from the EXE and `release_files/`. |
+| `poker_rng.pyw`, `PokerRNG.spec` | Earlier Tkinter prototype, kept for reference. |
+| `index.html`, `style.css`, `app.js` | A browser mock-up of the same tool — not part of the EXE. |
+| `create_shortcut.ps1`, `create_shortcut.vbs`, `update_shortcut_icon.vbs` | Helpers that put a shortcut with the right icon on the Desktop. |
+

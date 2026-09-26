@@ -1,73 +1,87 @@
-========================================================================
-POKERLAB RNG — GTO DECISION HUD (v1.0)
-========================================================================
+======================================================================
+ POKERLAB RNG  (v1.0)
+ A small random number generator for GTO mixed frequencies
+======================================================================
 
-Welcome to PokerLab RNG!
-An ultra-compact, high-performance desktop HUD designed for poker players
-using mixed-frequency strategies (GTO), multi-tabling, and live games.
+WHAT IT DOES
+------------
+PokerLab RNG rolls a random number from 1 to 100. You set how often you
+want to bet or raise (your frequency), and the program rolls the number
+so the decision is random and honest instead of a feeling.
 
-100% Standalone — No installation required! Just extract and play.
-
-------------------------------------------------------------------------
-QUICK START
-------------------------------------------------------------------------
-Double-click:
-  PokerLabRNG.exe
-
-(Optional: Right-click PokerLabRNG.exe -> "Create shortcut" and drag it 
-to your Desktop).
+It is NOT a tracker, NOT a HUD and NOT a solver. It does not read your
+tables, does not count hands, stores no statistics and never goes online.
+It only rolls a number.
 
 
-------------------------------------------------------------------------
-KEY FEATURES
-------------------------------------------------------------------------
-1. Fixed HUD Footprint (240 x 420 px):
-   Compact size designed to sit cleanly beside or between your poker 
-   tables (PokerStars, GGPoker, PartyPoker, WPT, etc.) without obstructing
-   cards, chips, or action buttons.
+START IT
+--------
+1. Unzip this package anywhere you like (the Desktop is fine).
+2. Double-click  PokerLabRNG.exe
 
-2. 144Hz / 240Hz Silky Smooth Movement:
-   Engineered with PyQt6 for perfectly fluid window dragging across 
-   monitors and tables with zero stutter.
-
-3. Single-Sweep Hover Mode:
-   Enable "Hover", and the RNG will roll automatically exactly ONCE 
-   each time your mouse cursor sweeps across the card. Zero clicks and
-   zero keystrokes required during high-speed multi-tabling!
-
-4. Always on Top (Pin 📌):
-   Enabled by default so PokerLab RNG never hides behind active poker 
-   clients when you click and bet.
-
-5. Cryptographically Secure (CSPRNG):
-   Uses Python `secrets` for unbiased, perfectly uniform random number
-   generation (1–100).
-
-6. GTO Frequency Decision Evaluator:
-   Quick preset chips for standard GTO frequencies (25%, 33%, 50%, 75%)
-   plus a precision slider.
-   Instantly displays:
-     - Glowing Green "BET / RAISE (<= X%)" if roll <= your threshold.
-     - Muted Slate "CHECK / FOLD (> X%)" if roll > your threshold.
-
-7. Auto-Roll Timer:
-   Continuous rolling every 1s or 2s for glance-and-go decision making.
-
-8. Roll History & Running Average:
-   Shows the last 6 rolls with action color coding and running average.
+Nothing to install: no admin rights, no account, no internet connection.
+Windows 10 or 11, 64-bit.
+The window is a fixed 240 x 420 px and stays on top of your tables.
+Drag it wherever it suits you.
 
 
-------------------------------------------------------------------------
+USE IT - THREE STEPS
+--------------------
+1. SET YOUR FREQUENCY
+   Click 25 %, 33 %, 50 % or 75 %, or drag the slider to any value
+   between 1 and 100.
+
+2. ROLL
+   Press the big ROLL RNG button, the space bar, or click the number
+   card itself.
+
+3. READ THE ANSWER
+   The program compares the roll with your frequency:
+     - roll inside your frequency  ->  BET / RAISE (<= 50 %)  in green
+     - roll above your frequency   ->  CHECK / FOLD (> 50 %)  in grey
+
+   With a frequency of 50 %, a roll of 12 means BET / RAISE and a roll
+   of 58 means CHECK / FOLD.
+
+
+WHAT YOU SEE ON SCREEN
+----------------------
+  The big number ......... the latest roll (1-100). Click the card to
+                           roll again.
+  Green or grey line ..... the action that follows from the roll and
+                           your frequency.
+  ROLL RNG (Space) ....... rolls a new number.
+  Manual / Hover /
+  Auto 2s / Auto 1s ...... how rolls happen: only when you ask
+                           (Manual), once every time the mouse sweeps
+                           over the card (Hover), or on a timer.
+  Threshold + slider ..... your frequency in percent.
+  25 / 33 / 50 / 75 % .... quick buttons for common frequencies.
+  Row of small boxes ..... your last six rolls.
+  Rolls / Avg ............ how many rolls this session and their
+                           average.
+  Speaker button ......... sound on or off.
+  Pin button ............. keep the window on top (on by default).
+
+
 KEYBOARD SHORTCUTS
-------------------------------------------------------------------------
-  Spacebar           : Roll new number manually
-  H                  : Toggle Hover Mode on/off
-  A                  : Toggle Auto-Roll (2s) on/off
-  T                  : Toggle Always On Top (Pin 📌)
-  M                  : Toggle Sound (Mute/Unmute)
-  Up Arrow / Down    : Adjust threshold (+/- 5%)
+------------------
+  Space ................ roll a new number
+  H .................... turn Hover mode on or off
+  A .................... turn Auto-roll (2 s) on or off
+  T .................... turn "always on top" on or off
+  M .................... mute or unmute the sound
+  Up / Down ............ frequency +/- 5 %
 
-========================================================================
-Built with PokerLab Engine
-Good luck at the tables!
-========================================================================
+
+GOOD TO KNOW
+------------
+- The rolls are cryptographically random, so every number from 1 to 100
+  is equally likely. A low roll does not make a high roll more likely.
+- Nothing is saved to disk. Close the program and the history is gone.
+- The sound is a short beep, played on a background thread so it never
+  makes the window stutter.
+
+======================================================================
+ Made with PokerLab Engine. Good luck at the tables!
+======================================================================
