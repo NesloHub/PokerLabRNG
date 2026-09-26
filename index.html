@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokerLab RNG — High-Performance GTO Decision Engine</title>
+    <meta name="description" content="Professional poker RNG for GTO mixed frequencies and multi-tabling.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="icon.png">
+</head>
+<body data-theme="emerald">
+    <!-- Background Ambient Glow -->
+    <div class="ambient-glow glow-top"></div>
+    <div class="ambient-glow glow-bottom"></div>
+
+    <div class="app-container" id="appContainer">
+        <!-- Top Navigation / Toolbar -->
+        <header class="top-bar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <img src="icon.png" alt="PokerLab Logo" style="width: 24px; height: 24px; border-radius: 50%;">
+                </div>
+                <div>
+                    <h1 class="brand-title">POKERLAB RNG</h1>
+                    <span class="brand-subtitle">CSPRNG GTO DECISION HUD</span>
+                </div>
+            </div>
+
+            <div class="top-controls">
+                <!-- Color Theme Selector -->
+                <div class="theme-picker" title="Choose Accent Color">
+                    <button class="theme-dot emerald active" data-color="emerald" aria-label="Emerald Green"></button>
+                    <button class="theme-dot sapphire" data-color="sapphire" aria-label="Sapphire Blue"></button>
+                    <button class="theme-dot gold" data-color="gold" aria-label="Cyber Gold"></button>
+                    <button class="theme-dot ruby" data-color="ruby" aria-label="Ruby Red"></button>
+                </div>
+
+                <!-- Sound Toggle -->
+                <button class="icon-btn" id="soundBtn" title="Toggle Sound (M)" aria-label="Toggle Sound">
+                    <svg id="soundIconOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg id="soundIconOff" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </button>
+
+                <!-- Pop-out Window (Mini HUD for multi-tabling) -->
+                <button class="icon-btn" id="popoutBtn" title="Open Compact Table HUD Popup" aria-label="Pop-out HUD">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </button>
+
+                <!-- HUD Compact View Mode Toggle -->
+                <button class="pill-btn" id="compactToggleBtn" title="Toggle Compact Table HUD (H)">
+                    <span id="compactBtnLabel">HUD Mode</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Layout Stack -->
+        <main class="main-content">
+            <!-- Core RNG Card -->
+            <section class="rng-card">
+                <!-- Mode Tabs -->
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="manual" id="tabManual">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 14l5-5-5-5"></path><path d="M4 20v-7a4 4 0 0 1 4-4h12"></path></svg>
+                        Manual (Space)
+                    </button>
+                    <button class="mode-tab" data-mode="hover" id="tabHover">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"></path></svg>
+                        Hover
+                    </button>
+                    <button class="mode-tab" data-mode="auto" id="tabAuto">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        Auto-Roll
+                    </button>
+                </div>
+
+                <!-- Circular Dial with Number Display -->
+                <div class="dial-container" id="dialContainer">
+                    <svg class="dial-svg" viewBox="0 0 260 260">
+                        <defs>
+                            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="var(--accent)" />
+                                <stop offset="100%" stop-color="var(--accent-glow)" />
+                            </linearGradient>
+                            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="6" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                        </defs>
+                        <!-- Background track -->
+                        <circle class="dial-track" cx="130" cy="130" r="110" />
+                        <!-- Progress / Timer Ring -->
+                        <circle class="dial-fill" id="dialFill" cx="130" cy="130" r="110" />
+                    </svg>
+
+                    <!-- Center Display -->
+                    <div class="dial-center">
+                        <div class="roll-meta-top" id="rollMetaTop">RNG VALUE</div>
+                        <div class="roll-number-wrapper">
+                            <span class="roll-number" id="rollDisplay">50</span>
+                        </div>
+                        <!-- Decision Result Pill inside dial -->
+                        <div class="decision-badge" id="decisionBadge">
+                            <span class="decision-action" id="decisionActionText">BET / RAISE</span>
+                            <span class="decision-diff" id="decisionDiffText">≤ 50%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auto-Interval Config (shown when Auto is on) -->
+                <div class="interval-controls hidden" id="intervalControls">
+                    <span class="interval-label">Interval:</span>
+                    <div class="interval-chips">
+                        <button class="interval-chip" data-sec="1">1s</button>
+                        <button class="interval-chip active" data-sec="2">2s</button>
+                        <button class="interval-chip" data-sec="3">3s</button>
+                        <button class="interval-chip" data-sec="4">4s</button>
+                        <button class="interval-chip" data-sec="5">5s</button>
+                    </div>
+                </div>
+
+                <!-- Primary Action Button -->
+                <div class="action-cta">
+                    <button class="btn-roll" id="btnRoll">
+                        <span class="btn-roll-text">ROLL RNG</span>
+                        <span class="btn-roll-kbd">SPACE</span>
+                    </button>
+                </div>
+
+                <!-- Quick Range Scale Switcher (1-100 vs 0-99) -->
+                <div class="range-switch-row">
+                    <span class="switch-text">Scale:</span>
+                    <div class="range-toggle-group">
+                        <button class="range-btn active" id="range100" data-range="1-100">1 – 100</button>
+                        <button class="range-btn" id="range99" data-range="0-99">0 – 99</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GTO Frequency Threshold Card -->
+            <section class="panel-card frequency-card">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <h2 class="panel-title">GTO Decision Threshold</h2>
+                        <p class="panel-desc">Set your target action frequency</p>
+                    </div>
+                    <div class="threshold-pill">
+                        <span id="thresholdDisplay">50</span>%
+                    </div>
+                </div>
+
+                <!-- Slider Bar -->
+                <div class="slider-wrapper">
+                    <input type="range" id="freqSlider" min="0" max="100" value="50" step="1" class="custom-slider">
+                    <div class="slider-ticks">
+                        <span>0%</span>
+                        <span>25%</span>
+                        <span>50%</span>
+                        <span>75%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <!-- Quick Preset Buttons -->
+                <div class="preset-chips">
+                    <button class="preset-chip" data-val="15">15%</button>
+                    <button class="preset-chip" data-val="25">25%</button>
+                    <button class="preset-chip" data-val="33">33%</button>
+                    <button class="preset-chip" data-val="40">40%</button>
+                    <button class="preset-chip active" data-val="50">50%</button>
+                    <button class="preset-chip" data-val="67">67%</button>
+                    <button class="preset-chip" data-val="75">75%</button>
+                    <button class="preset-chip" data-val="85">85%</button>
+                </div>
+
+                <!-- Action Name Config -->
+                <div class="actions-split-grid">
+                    <div class="action-box box-a" id="actionBoxA">
+                        <div class="action-head">
+                            <span class="action-tag tag-a">Action A (1 – <span class="tag-a-val">50</span>)</span>
+                            <span class="action-state-icon" id="actionIconA">✓</span>
+                        </div>
+                        <input type="text" class="action-input" id="actionInputA" value="BET / RAISE" maxlength="15" title="Click to rename action">
+                    </div>
+                    <div class="action-box box-b" id="actionBoxB">
+                        <div class="action-head">
+                            <span class="action-tag tag-b">Action B (<span class="tag-b-val">51</span> – 100)</span>
+                            <span class="action-state-icon" id="actionIconB">✕</span>
+                        </div>
+                        <input type="text" class="action-input" id="actionInputB" value="CHECK / FOLD" maxlength="15" title="Click to rename action">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Roll History Card -->
+            <section class="panel-card history-card">
+                <div class="panel-header">
+                    <h2 class="panel-title">Recent Rolls</h2>
+                    <button class="text-btn" id="clearHistoryBtn" title="Clear History">Clear</button>
+                </div>
+                
+                <div class="history-strip" id="historyStrip">
+                    <span class="history-empty">No rolls yet. Press Spacebar!</span>
+                </div>
+
+                <!-- Fairness & Stats Bar -->
+                <div class="stats-footer">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Rolls</span>
+                        <span class="stat-value" id="statTotalCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Average</span>
+                        <span class="stat-value" id="statAverage">—</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Action A Rate</span>
+                        <span class="stat-value" id="statActionRate">—</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shortcuts Legend -->
+            <div class="shortcuts-legend">
+                <span class="shortcut-item"><kbd>Space</kbd> Roll</span>
+                <span class="shortcut-item"><kbd>H</kbd> Hover</span>
+                <span class="shortcut-item"><kbd>A</kbd> Auto</span>
+                <span class="shortcut-item"><kbd>M</kbd> Mute</span>
+                <span class="shortcut-item"><kbd>↑</kbd><kbd>↓</kbd> Threshold</span>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

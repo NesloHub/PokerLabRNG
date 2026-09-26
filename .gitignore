@@ -1,0 +1,12 @@
+# Python / PyInstaller build output
+__pycache__/
+*.py[cod]
+build/
+dist/
+
+# Release artefacts (published as GitHub release assets, not committed)
+*.exe
+*.zip
+
+# Local shortcuts
+*.lnk
